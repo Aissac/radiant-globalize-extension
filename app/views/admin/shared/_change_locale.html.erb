@@ -1,0 +1,6 @@
+<div id="change_locale">
+  <input type="hidden" name="locale" value="<%= Locale.active.code %>">
+  Locale: 
+  <%= link_to_unless(Locale.active.code == 'ro', 'RO', params.merge(:locale => 'ro')) %> |
+  <%= link_to_unless(Locale.active.code == 'en', 'EN', params.merge(:locale => 'en')) %>
+</div>
