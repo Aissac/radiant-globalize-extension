@@ -14,18 +14,10 @@ module ApplicationControllerExtensions
 
   module InstanceMethods
     def set_locale
-      default_locale = GLOBALIZE_BASE_LANGUAGE
-      
-      @locale = params[:locale] || session[:locale] || default_locale
+      @locale = params[:locale] || session[:locale] || GLOBALIZE_BASE_LANGUAGE
       
       session[:locale] = @locale
-      begin
-        Locale.set @locale
-      rescue e
-        Locale.set default_locale
-      end
-      
-      logger.debug("Locale set to #{Locale.active.inspect}")
+      Locale.set @locale
     end
     
     def globalization_scope

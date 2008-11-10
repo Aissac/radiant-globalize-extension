@@ -54,4 +54,18 @@ module GlobalizeTags
     hash = tag.locals.locale
     hash[:code]
   end
+  
+  desc "Locale set temporar"
+  tag 'with_locale' do |tag|
+    code = tag.attr['code']
+    raise TagError.new("`code' must be set") if code.blank?
+    result = ''
+    result += tag.expand
+    Locale.switch_locale(code) do
+      PageAttachment.send(:with_exclusive_scope, :find => {:conditions => {:locale => Locale.active.code}}) do
+        result << tag.expand
+      end
+    end
+    result
+  end
 end
