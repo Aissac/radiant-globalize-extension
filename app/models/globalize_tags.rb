@@ -23,10 +23,10 @@ module GlobalizeTags
     end
   end
   
-  tag 'locale' do |tag|
+  tag 'locales' do |tag|
     hash = tag.locals.locale = {}
     tag.expand
-    raise TagError.new("`locale' tag must include a `normal' tag") unless hash.has_key? :normal
+    raise TagError.new("`locales' tag must include a `normal' tag") unless hash.has_key? :normal
     
     result = []
     codes = tag.attr['codes'].split('|').each do |code|
@@ -44,13 +44,13 @@ module GlobalizeTags
   end
   
   [:normal, :active].each do |symbol|
-    tag "locale:#{symbol}" do |tag|
+    tag "locales:#{symbol}" do |tag|
       hash = tag.locals.locale
       hash[symbol] = tag.block
     end
   end
   
-  tag 'locale:code' do |tag|
+  tag 'locales:code' do |tag|
     hash = tag.locals.locale
     hash[:code]
   end
@@ -66,5 +66,10 @@ module GlobalizeTags
       end
     end
     result
+  end
+  
+  desc "Prints out the current locale."
+  tag 'locale' do |tag|
+    Locale.active.code
   end
 end
