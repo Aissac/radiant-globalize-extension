@@ -25,6 +25,10 @@ class GlobalizeExtension < Radiant::Extension
     defined?(GLOBALIZE_SCOPED_MODELS) && GLOBALIZE_SCOPED_MODELS || []
   end
   
+  def self.locales
+    @@locales ||= [GLOBALIZE_BASE_LANGUAGE, *GLOBALIZE_LANGUAGES].map(&:to_s)
+  end
+  
   def activate
     admin.page.edit.add :form, 'admin/shared/change_locale', :before => 'edit_page_parts'
     admin.snippet.edit.add :form, 'admin/shared/change_locale', :before => 'edit_content'
