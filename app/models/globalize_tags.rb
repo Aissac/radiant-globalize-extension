@@ -91,6 +91,11 @@ module GlobalizeTags
     tag.expand if page.send(Page.localized_facet(:title)).blank?
   end
   
+  desc %{
+    Only expands if specified part has translated content in the current locale.
+    Usage:
+        <code><pre><r:if_translation_content [part="body"]>...</r:if_translation_content></pre></code>
+  }
   tag 'if_translation_content' do |tag|
     name = tag.attr['part'] || 'body'
     raise TagError.new("`part' must be set") if name.blank?
@@ -98,6 +103,7 @@ module GlobalizeTags
     tag.expand if part && !part.send(PagePart.localized_facet(:content)).blank?
   end
   
+  desc "Only expands if specified part does not have translated content in the current locale."
   tag 'unless_translation_content' do |tag|
     name = tag.attr['part'] || 'body'
     raise TagError.new("`part' must be set") if name.blank?

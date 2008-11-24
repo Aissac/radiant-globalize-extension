@@ -36,7 +36,9 @@ class GlobalizeExtension < Radiant::Extension
     
     ApplicationController.send(:include, ApplicationControllerExtensions)
     ResponseCache.send(:include, ResponseCacheExtensions)
-    Page.send(:include, GlobalizeTags)
+    Page.class_eval {
+      include GlobalizeTags
+    }
     
     Globalize::Locale.set_base_language(GLOBALIZE_BASE_LANGUAGE)
     
