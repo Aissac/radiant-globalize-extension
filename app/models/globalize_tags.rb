@@ -72,4 +72,24 @@ module GlobalizeTags
   tag 'locale' do |tag|
     Locale.active.code
   end
+  
+  tag 'if_translation' do |tag|
+    tag.expand
+  end
+  
+  desc "Only expands if the page title has a translation for the current locale."
+  tag 'if_translation:title' do |tag|
+    page = tag.locals.page
+    tag.expand unless page.send(Page.localized_facet(:title)).blank?
+  end
+  
+  tag 'unless_translation' do |tag|
+    tag.expand
+  end
+  
+  desc "Only expands if the page title does not have a translation for the current locale."
+  tag 'unless_translation:title' do |tag|
+    page = tag.locals.page
+    tag.expand if page.send(Page.localized_facet(:title)).blank?
+  end
 end
