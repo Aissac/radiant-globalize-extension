@@ -1,6 +1,8 @@
 module GlobalizeTags
   include Radiant::Taggable
   
+  class TagError < StandardError; end
+  
   def self.included(base)
     base.class_eval do
       alias_method_chain 'tag:link', :globalize
@@ -74,6 +76,7 @@ module GlobalizeTags
   end
   
   tag 'if_translation' do |tag|
+    debugger
     tag.expand
   end
   
@@ -91,5 +94,19 @@ module GlobalizeTags
   tag 'unless_translation:title' do |tag|
     page = tag.locals.page
     tag.expand if page.send(Page.localized_facet(:title)).blank?
+  end
+  
+  tag 'if_translation:content' do |tag|
+    name = tag.attr['part']
+    raise TagError.new("`part' must be set") if name.blank?
+    part = tag.locals.page.part(name)
+    tag.expand if part && !part.send(PagePart.localized_facet(:content)).blank?
+  end
+  
+  tag 'unless_translation:content' do |tag|
+    name = tag.attr['name']
+    raise TagError.new("`name' must be set") if name.blank?
+    part = tag.locals.page.part(name)
+    tag.expand if part.nil? || !part.send(PagePart.localized_facet(:content)).blank?
   end
 end
