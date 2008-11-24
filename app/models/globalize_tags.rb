@@ -63,7 +63,11 @@ module GlobalizeTags
     raise TagError.new("`code' must be set") if code.blank?
     result = ''
     Locale.switch_locale(code) do
-      PageAttachment.send(:with_exclusive_scope, :find => {:conditions => {:locale => Locale.active.code}}) do
+      if defined?(PageAttachment)
+        PageAttachment.send(:with_exclusive_scope, :find => {:conditions => {:locale => Locale.active.code}}) do
+          result << tag.expand
+        end
+      else
         result << tag.expand
       end
     end
@@ -75,38 +79,29 @@ module GlobalizeTags
     Locale.active.code
   end
   
-  tag 'if_translation' do |tag|
-    debugger
-    tag.expand
-  end
-  
   desc "Only expands if the page title has a translation for the current locale."
-  tag 'if_translation:title' do |tag|
+  tag 'if_translation_title' do |tag|
     page = tag.locals.page
     tag.expand unless page.send(Page.localized_facet(:title)).blank?
   end
   
-  tag 'unless_translation' do |tag|
-    tag.expand
-  end
-  
   desc "Only expands if the page title does not have a translation for the current locale."
-  tag 'unless_translation:title' do |tag|
+  tag 'unless_translation_title' do |tag|
     page = tag.locals.page
     tag.expand if page.send(Page.localized_facet(:title)).blank?
   end
   
-  tag 'if_translation:content' do |tag|
-    name = tag.attr['part']
+  tag 'if_translation_content' do |tag|
+    name = tag.attr['part'] || 'body'
     raise TagError.new("`part' must be set") if name.blank?
     part = tag.locals.page.part(name)
     tag.expand if part && !part.send(PagePart.localized_facet(:content)).blank?
   end
   
-  tag 'unless_translation:content' do |tag|
-    name = tag.attr['name']
-    raise TagError.new("`name' must be set") if name.blank?
+  tag 'unless_translation_content' do |tag|
+    name = tag.attr['part'] || 'body'
+    raise TagError.new("`part' must be set") if name.blank?
     part = tag.locals.page.part(name)
-    tag.expand if part.nil? || !part.send(PagePart.localized_facet(:content)).blank?
+    tag.expand if part.nil? || part.send(PagePart.localized_facet(:content)).blank?
   end
 end
