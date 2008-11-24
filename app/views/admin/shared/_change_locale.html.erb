@@ -4,7 +4,7 @@
   <%= GlobalizeExtension.locales.map do |locale|
     link_to_unless(Locale.active.code == locale, locale, params.merge(:locale => locale))
   end.join(' | ') -%>
-  <% unless Locale.active.code == GLOBALIZE_BASE_LANGUAGE %>
+  <% unless @page.nil? || Locale.active.code == GLOBALIZE_BASE_LANGUAGE %>
     <% if @page.translated_title? %>
       <span style="color:darkgreen;font-weight:bold">translated</span>
     <% else %>
