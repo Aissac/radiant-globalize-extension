@@ -7,11 +7,31 @@ module GlobalizeTags
     base.class_eval do
       alias_method_chain 'tag:link', :globalize
       alias_method_chain :relative_url_for, :globalize
+      before_save :check_reset_translations
+      attr_accessor :reset_translations
     end
   end
   
   def relative_url_for_with_globalize(*args)
     '/' + Locale.active.code + relative_url_for_without_globalize(*args)
+  end
+  
+  def translated_title?
+    !self.send(Page.localized_facet(:title)).blank?
+  end
+  
+  def check_reset_translations
+    return unless reset_translations
+    
+    GlobalizeExtension::GLOBALIZABLE_CONTENT[Page].each do |key|
+      self.send(:"#{Page.localized_facet(key)}=", nil)
+    end
+    
+    parts.each do |part|
+      GlobalizeExtension::GLOBALIZABLE_CONTENT[PagePart].each do |key|
+        part.send(:"#{PagePart.localized_facet(key)}=", nil)
+      end
+    end
   end
   
   tag 'link_with_globalize' do |tag|

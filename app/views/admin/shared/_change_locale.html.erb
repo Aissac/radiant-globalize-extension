@@ -4,4 +4,15 @@
   <%= GlobalizeExtension.locales.map do |locale|
     link_to_unless(Locale.active.code == locale, locale, params.merge(:locale => locale))
   end.join(' | ') -%>
+  <% unless Locale.active.code == GLOBALIZE_BASE_LANGUAGE %>
+    <% if @page.translated_title? %>
+      <span style="color:darkgreen;font-weight:bold">translated</span>
+    <% else %>
+      <span style="color:darkred;font-weight:bold">not translated</span>
+    <% end -%>
+    <label for="reset_translations">
+      <input type="checkbox" value="true" name="page[reset_translations]" id="reset_translations" />
+      Reset translations
+    </label>
+  <% end -%>
 </div>
