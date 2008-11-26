@@ -36,6 +36,7 @@ class GlobalizeExtension < Radiant::Extension
     
     ApplicationController.send(:include, ApplicationControllerExtensions)
     Admin::PageController.send(:include, PageControllerExtensions)
+    ArchivePage.send(:include, ArchivePageExtensions)
     ResponseCache.send(:include, ResponseCacheExtensions)
     Page.class_eval {
       include GlobalizeTags
