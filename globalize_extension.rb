@@ -35,6 +35,7 @@ class GlobalizeExtension < Radiant::Extension
     admin.layout.edit.add :form, 'admin/shared/change_locale', :before => 'edit_content'
     
     ApplicationController.send(:include, ApplicationControllerExtensions)
+    Admin::PageController.send(:include, PageControllerExtensions)
     ResponseCache.send(:include, ResponseCacheExtensions)
     Page.class_eval {
       include GlobalizeTags
