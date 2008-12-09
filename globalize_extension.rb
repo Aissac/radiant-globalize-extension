@@ -34,6 +34,10 @@ class GlobalizeExtension < Radiant::Extension
     admin.snippet.edit.add :form, 'admin/shared/change_locale', :before => 'edit_content'
     admin.layout.edit.add :form, 'admin/shared/change_locale', :before => 'edit_content'
     
+    admin.page.index.add :sitemap_head, 'admin/shared/globalize_th'
+    admin.page.index.add :node, 'admin/shared/globalize_td'
+    admin.page.index.add :top, 'admin/shared/change_locale_admin'
+    
     ApplicationController.send(:include, ApplicationControllerExtensions)
     Admin::PageController.send(:include, PageControllerExtensions)
     ArchivePage.send(:include, ArchivePageExtensions)

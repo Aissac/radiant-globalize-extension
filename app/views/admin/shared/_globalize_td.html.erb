@@ -1,0 +1,9 @@
+<td class="globalize">  
+  <% GlobalizeExtension.locales.map do |locale| %>
+    <% Locale.switch_locale(locale) do %>
+      <% if page.translated_title? %>
+        <img src='/images/admin/<%= locale %>.gif' alt='<%= locale %>' />
+      <% end -%>
+    <% end -%>
+  <% end -%>
+</td>
