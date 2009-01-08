@@ -1,0 +1,28 @@
+Globalize
+===
+
+About
+---
+
+Radiant CMS localization using [Globalize][gl]:
+
+Installation
+---
+
+    git-submodule add git://github.com/ihoka/globalize.git vendor/plugins/globalize
+    git-submodule add git://github.com/daemon/radiant-globalize-extension.git vendor/extensions/globalize
+
+environment.rb
+
+    GLOBALIZE_LANGUAGES = [:en, :ru]
+    GLOBALIZE_BASE_LANGUAGE = 'ro'
+    GLOBALIZE_SCOPED_MODELS = ['PageAttachment']
+    ...
+    include Globalize
+
+Run `rake db:bootstrap` or whatever you need to create radiant tables and do
+
+    rake globalize:setup
+    rake radiant:extensions:globalize:migrate
+
+[gl]: http://www.globalize-rails.org/
