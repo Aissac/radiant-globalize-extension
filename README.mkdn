@@ -16,13 +16,21 @@ environment.rb
 
     GLOBALIZE_LANGUAGES = [:en, :ru]
     GLOBALIZE_BASE_LANGUAGE = 'ro'
-    GLOBALIZE_SCOPED_MODELS = ['PageAttachment']
-    ...
+    
+    Radiant::Initializer.run do |config|
+        ...
+    end
     include Globalize
 
 Run `rake db:bootstrap` or whatever you need to create radiant tables and do
 
     rake globalize:setup
     rake radiant:extensions:globalize:migrate
+
+If you are using [`page_attachments`] (or any other extension that provides models you want to be language dependent) you could also add
+
+    GLOBALIZE_SCOPED_MODELS = ['PageAttachment']
+    
+to your environment.rb
 
 [gl]: http://www.globalize-rails.org/
