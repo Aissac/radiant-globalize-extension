@@ -1,18 +1,29 @@
-<div id="change_locale">
+<% @stylesheets << 'admin/globalize' %>
+<div id="globalize">
   <input type="hidden" name="locale" value="<%= Locale.active.code %>">
-  Locale: 
-  <%= GlobalizeExtension.locales.map do |locale|
-    link_to_unless(Locale.active.code == locale, locale, params.merge(:locale => locale))
-  end.join(' | ') -%>
+  <div id="edit">
+    <p>Locale:</p>
+    <% GlobalizeExtension.locales.map do |locale| %>
+        <span class="locale">
+        <%= link_to_unless(Locale.active.code == locale, "<img src='/images/admin/#{locale}.gif' alt='#{locale}' />", params.merge(:locale => locale), :class => "not_active") %>
+      <% if !@page.nil? && Locale.active.code == locale %>
+        <% if Locale.active.code != GLOBALIZE_BASE_LANGUAGE %>
+          <% if @page.translated_title? %>
+            <span class="translated">(translated)</span>
+          <% else %>
+            <span class="not-translated">(not translated)</span>
+          <% end -%>
+        <% else %>  
+          <span>(default)</span>
+        <% end -%>
+      <% end -%>
+    </span>
+  <%  end -%>
   <% unless @page.nil? || Locale.active.code == GLOBALIZE_BASE_LANGUAGE %>
-    <% if @page.translated_title? %>
-      <span style="color:darkgreen;font-weight:bold">translated</span>
-    <% else %>
-      <span style="color:darkred;font-weight:bold">not translated</span>
-    <% end -%>
     <label for="reset_translations">
       <input type="checkbox" value="true" name="page[reset_translations]" id="reset_translations" />
-      Reset translations
+      Delete <%= Locale.active.code.upcase %> translation
     </label>
   <% end -%>
+  </div>
 </div>

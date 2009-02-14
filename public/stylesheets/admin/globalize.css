@@ -1,0 +1,14 @@
+#globalize                    {margin-bottom:5px;}
+#globalize p                  {margin:0;}
+#globalize #index             {float:right;}
+div.form_area #globalize      {width:100%;float:none;}
+#globalize #index a, #globalize #edit a           
+                              {margin:0;}
+#globalize #index a img, #globalize #index img, #globalize #edit img, #globalize #edit a img
+                              {padding:1px;margin:0 5px 0 5px;border:2px solid blue;}
+#globalize #index a.not_active img, #globalize #edit a.not_active img
+                              {border:2px solid #FFF;}
+#globalize span.locale        {font-weight:bold;border-right:2px solid #000;}
+#globalize span.translated    {color:darkgreen;margin-right:5px;}
+#globalize span.not-translated{color:darkred;margin-right:5px;}
+td.globalize img              {margin:0 3px 0 3px;}

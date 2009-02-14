@@ -1,4 +1,5 @@
 module PageControllerExtensions
+  
   def self.included(base)
     base.class_eval do
       def save

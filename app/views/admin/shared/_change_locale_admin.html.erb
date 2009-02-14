@@ -1,0 +1,8 @@
+<% @stylesheets << 'admin/globalize' %>
+<div id="globalize">
+  <div id="index">
+    <%= GlobalizeExtension.locales.map do |locale|
+      link_to_unless(Locale.active.code == locale, "<img src='/images/admin/#{locale}.gif' alt='#{locale}' />", params.merge(:locale => locale), :class => "not_active")
+    end %>
+  </div>
+</div>
